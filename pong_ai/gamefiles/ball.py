@@ -29,19 +29,24 @@ class Ball:
 
     def collision(self, paddles, wall, screen_width):
         for padel in paddles:
-            if (self.x + self.size >= padel.x and self.x <= padel.x) or (
-                wall and self.x + self.size >= screen_width - padel.width
-            ):
+            if (
+                self.x + self.size >= padel.x - self.x_vel
+                and self.x <= padel.x + self.x_vel
+            ) or (wall and self.x + self.size >= screen_width - padel.width):
                 if (
-                    self.y >= padel.y and self.y + self.size <= padel.y + padel.height
+                    self.y >= padel.y - 20
+                    and self.y + self.size <= padel.y + padel.height + 20
                 ) or wall:
                     self.direction = abs(self.direction) * -1
                     return padel.index
             elif (
-                self.x - self.size <= padel.x + padel.width
-                and self.x >= padel.x + padel.width
+                self.x - self.size <= padel.x + padel.width + self.x_vel
+                and self.x >= padel.x + padel.width - self.x_vel
             ):
-                if self.y >= padel.y and self.y + self.size <= padel.y + padel.height:
+                if (
+                    self.y >= padel.y - 20
+                    and self.y + self.size <= padel.y + padel.height + 20
+                ):
                     self.direction = abs(self.direction)
                     return padel.index
         return 3
