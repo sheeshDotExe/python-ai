@@ -128,6 +128,58 @@ class Training_model:
         with open("best.pickle", "wb") as f:
             pickle.dump(winner, f)
 
+    def ai_vs_ai(self):
+
+        try:
+            with open("best.pickle", "rb") as f:
+                winner = pickle.load(f)
+        except IOError:
+            print("no trained ai")
+
+        clock = pygame.time.Clock()
+        width, height = 800, 800
+        window = pygame.display.set_mode((width, height))
+        game = Game(window, width, height)
+        player_decision = 0
+        net = neat.nn.FeedForwardNetwork.create(winner, self.config)
+        net2 = neat.nn.FeedForwardNetwork.create(winner, self.config)
+
+        while True:
+            clock.tick(60)
+
+            output = net2.activate(
+                (
+                    game.left_padel.y + game.left_padel.width // 2,
+                    abs(game.left_padel.x - game.ball.x),
+                    game.ball.y,
+                )
+            )
+            decision = output.index(max(output))
+            if decision == 0:
+                pass
+            elif decision == 1:
+                game.left_padel.move(-1, game.height)
+            else:
+                game.left_padel.move(1, game.height)
+
+            output = net.activate(
+                (
+                    game.right_padel.y + game.right_padel.width // 2,
+                    abs(game.right_padel.x - game.ball.x),
+                    game.ball.y,
+                )
+            )
+            decision = output.index(max(output))
+            if decision == 0:
+                pass
+            elif decision == 1:
+                game.right_padel.move(-1, game.height)
+            else:
+                game.right_padel.move(1, game.height)
+
+            if game.run_frame(True):
+                game.ball.reset()
+
     def play_against_best_ai(self):
 
         try:

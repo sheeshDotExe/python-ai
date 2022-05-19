@@ -32,17 +32,6 @@ class Game:
         )
         self.window.blit(text, (200, 100))
 
-        side = self.ball.move(self.width, self.height)
-        if side == "left":
-            self.right_score += 5
-            self.right_goals += 1
-            return True
-        elif side == "right":
-            if not wall:
-                self.left_score += 5
-                self.left_goals += 1
-                return True
-
         coll = self.ball.collision(
             [self.left_padel, self.right_padel], wall, self.width
         )
@@ -56,6 +45,16 @@ class Game:
             self.ball.lefthit = True
             self.ball.x_vel *= 1.1
             self.ball.y_vel *= 1.1
+        side = self.ball.move(self.width, self.height)
+        if side == "left":
+            self.right_score += 5
+            self.right_goals += 1
+            return True
+        elif side == "right":
+            if not wall:
+                self.left_score += 5
+                self.left_goals += 1
+                return True
 
         self.left_padel.draw(self.window)
         if not wall:

@@ -34,9 +34,10 @@ class Ball:
                 and self.x <= padel.x + self.x_vel
             ) or (wall and self.x + self.size >= screen_width - padel.width):
                 if (
-                    self.y >= padel.y - 20
-                    and self.y + self.size <= padel.y + padel.height + 20
+                    self.y >= padel.y - 20 - self.y_vel
+                    and self.y + self.size <= padel.y + padel.height + 20 + self.y_vel
                 ) or wall:
+                    self.x -= 10
                     self.direction = abs(self.direction) * -1
                     return padel.index
             elif (
@@ -44,9 +45,10 @@ class Ball:
                 and self.x >= padel.x + padel.width - self.x_vel
             ):
                 if (
-                    self.y >= padel.y - 20
-                    and self.y + self.size <= padel.y + padel.height + 20
+                    self.y >= padel.y - 20 - self.y_vel
+                    and self.y + self.size <= padel.y + padel.height + 20 + self.y_vel
                 ):
+                    self.x += 10
                     self.direction = abs(self.direction)
                     return padel.index
         return 3

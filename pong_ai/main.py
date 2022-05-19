@@ -21,7 +21,8 @@ def main():
             CHECKPOINT=9,
         )
     else:
-        training.play_against_best_ai()
+        # training.play_against_best_ai()
+        training.ai_vs_ai()
 
 
 if __name__ == "__main__":
